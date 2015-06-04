@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ExpressiveData.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("InfoPlanIT")]
+[assembly: AssemblyCompany("James Johnson")]
 [assembly: AssemblyProduct("ExpressiveData.Tests")]
-[assembly: AssemblyCopyright("Copyright © InfoPlanIT 2015")]
+[assembly: AssemblyCopyright("Copyright © James Johnson, 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
