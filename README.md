@@ -7,7 +7,7 @@ Born from a "what-if" discussion, this library aims to make it easier for devs t
 using(var dataReader = await cmd.ExecuteReaderAsync())
 {
 	var expressive = dataReader.GetExpressive();
-	var items = await expressive.GetModelsFromResultSetAsync(r => 
+	var items = await expressive.GetModelsForResultSetAsync<Customer>(async r => 
 	{
 		r.Model = new Customer();
 

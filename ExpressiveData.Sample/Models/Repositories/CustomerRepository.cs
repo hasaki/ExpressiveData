@@ -61,7 +61,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 		{
 			const string sql = "SELECT * FROM Customers";
 
-			Func<IExpressiveReaderAsync<Customer>, Task<Customer>> callback = async r =>
+			return await ExecuteQueryAsync<Customer>(sql, null, async r =>
 			{
 				r.Model = new Customer();
 
@@ -73,9 +73,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 				await r.ReadAsync(m => m.ZipCode);
 
 				return r.Model;
-			};
-
-			return await ExecuteQueryAsync(sql, null, callback);
+			});
 		}
 	}
 }
