@@ -35,7 +35,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 
 		public IEnumerable<Customer> GetAllCustomers()
 		{
-			var sql = "SELECT * FROM Customers";
+			const string sql = "SELECT * FROM Customers";
 
 			var customers = new List<Customer>();
 			Action<IExpressiveReader<Customer>> callback = r =>
@@ -59,7 +59,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 
 		public async Task<IEnumerable<Customer>>  GetAllCustomersAsync()
 		{
-			var sql = "SELECT * FROM Customers";
+			const string sql = "SELECT * FROM Customers";
 
 			Func<IExpressiveReaderAsync<Customer>, Task<Customer>> callback = async r =>
 			{
