@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ExpressiveData
 {
-	internal class ExpressiveSqlDataReader<TModel> : ExpressiveIDataReader<TModel>, IExpressiveReaderAsync<TModel>
+	internal class ExpressiveDbDataReader<TModel> : ExpressiveIDataReader<TModel>, IExpressiveReaderAsync<TModel>
 	{
 		private readonly IOrdinalProvider _ordinalProvider;
-		private readonly SqlDataReader _reader;
+		private readonly DbDataReader _reader;
 		private readonly ExpressionMetaDataProvider _metaDataProvider;
 
-		internal ExpressiveSqlDataReader(IOrdinalProvider ordinalProvider, SqlDataReader reader, ExpressionMetaDataProvider metaDataProvider) 
+		internal ExpressiveDbDataReader(IOrdinalProvider ordinalProvider, DbDataReader reader, ExpressionMetaDataProvider metaDataProvider) 
 			: base(ordinalProvider, reader, metaDataProvider)
 		{
 			_ordinalProvider = ordinalProvider;

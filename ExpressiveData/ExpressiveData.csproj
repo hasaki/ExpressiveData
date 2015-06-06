@@ -43,14 +43,15 @@
     <Compile Include="DataReaderExtensions.cs" />
     <Compile Include="ExpressionMetaData.cs" />
     <Compile Include="ExpressionMetaDataProvider.cs" />
-    <Compile Include="ExpressiveSqlDataReader.cs" />
-    <Compile Include="ExpressiveSqlDataReaderResultSet.cs" />
+    <Compile Include="ExpressiveDbDataReader.cs" />
+    <Compile Include="ExpressiveDbDataReaderResultSet.cs" />
     <Compile Include="IExpressiveReaderAsync.cs" />
     <Compile Include="IExpressiveResultSet.cs" />
     <Compile Include="IExpressiveReader.cs" />
     <Compile Include="ExpressiveIDataReader.cs" />
     <Compile Include="IExpressiveResultSetAsync.cs" />
     <Compile Include="IOrdinalProvider.cs" />
+    <Compile Include="ModelsForResultSetsResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpressiveIDataReaderResultSet.cs" />
   </ItemGroup>
