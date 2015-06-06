@@ -5,13 +5,13 @@ using NUnit.Framework;
 namespace ExpressiveData.Tests
 {
 	[TestFixture]
-	public class DataReaderWrapperTests
+	public class BaseExpressiveResultSetTests
 	{
 		private const string PropertyWithAttribute = "ColumnA";
 		private const string PropertyWithOutAttribute = "PropertyWithOutAttribute";
 		public class TestClass
 		{
-			[Db(ColumnName = DataReaderWrapperTests.PropertyWithAttribute)]
+			[ExpressiveColumn(ColumnName = BaseExpressiveResultSetTests.PropertyWithAttribute)]
 			public string PropertyWithAttribute { get; set; }
 
 			public string PropertyWithOutAttribute { get; set; }
@@ -25,7 +25,7 @@ namespace ExpressiveData.Tests
 			mockReader.Setup(reader => reader.GetOrdinal(PropertyWithOutAttribute)).Returns(2);
 
 			var fakeReader = mockReader.Object;
-			var wrapper = new DataReaderWrapper(fakeReader, new ExpressionMetaDataProvider());
+			var wrapper = new ExpressiveIDataReaderResultSet(fakeReader, new ExpressionMetaDataProvider());
 
 			wrapper.GetOrdinal(PropertyWithAttribute);
 			wrapper.GetOrdinal(PropertyWithAttribute);

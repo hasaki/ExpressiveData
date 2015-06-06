@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace ExpressiveData
 {
-	public interface INewModelContext<TModel>
+	public interface IExpressiveReader<TModel>
 	{
 		void Read<TResult>(Expression<Func<TModel, TResult>> expression);
 		void Read<TResult>(Expression<Func<TModel, TResult>> expression, TResult defaultValue);

@@ -46,7 +46,7 @@ namespace ExpressiveData
 
 		private string GetColumnNameForPropertyInfo(PropertyInfo propertyInfo)
 		{
-			var att = propertyInfo.GetCustomAttributes(typeof(DbAttribute)).Cast<DbAttribute>().FirstOrDefault();
+			var att = propertyInfo.GetCustomAttributes(typeof(ExpressiveColumnAttribute)).Cast<ExpressiveColumnAttribute>().FirstOrDefault();
 
 			if (att == null)
 				return propertyInfo.Name;

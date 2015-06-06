@@ -8,9 +8,9 @@ namespace ExpressiveData
 		private static readonly Lazy<ExpressionMetaDataProvider> MetaDataProvider =
 			new Lazy<ExpressionMetaDataProvider>(() => new ExpressionMetaDataProvider());
  
-		public static DataReaderWrapper GetExpressive(this IDataReader reader)
+		public static ExpressiveIDataReaderResultSet GetExpressive(this IDataReader reader)
 		{
-			return new DataReaderWrapper(reader, MetaDataProvider.Value);
+			return new ExpressiveIDataReaderResultSet(reader, MetaDataProvider.Value);
 		}
 	}
 }
