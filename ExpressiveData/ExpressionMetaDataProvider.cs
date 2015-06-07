@@ -20,38 +20,36 @@ namespace ExpressiveData
 			var innerDictionary = MetaData.GetOrAdd(typeof(TModel),
 				(type) => new ConcurrentDictionary<string, ExpressionMetaData>(StringComparer.OrdinalIgnoreCase));
 
-			return innerDictionary.GetOrAdd(expression.ToString(), _ => GetExpressionMetaDataImpl(expression));
+			return innerDictionary.GetOrAdd(expression.ToString(), _ => GetExpressionMetaDataImpl(expression, new ExpressionMetaData
+			{
+				DatabaseType = typeof(TResult).IsEnum ? typeof(string) : typeof(TResult),
+				ResultType = typeof(TResult),
+				SetValueFn = GetSetter(expression)
+			}));
 		}
 
-		private ExpressionMetaData GetExpressionMetaDataImpl<TModel, TResult>(Expression<Func<TModel, TResult>> expression)
+		private ExpressionMetaData GetExpressionMetaDataImpl<TModel, TResult>(Expression<Func<TModel, TResult>> expression, ExpressionMetaData metaData)
 		{
 			var memberAccess = expression.Body as MemberExpression;
 
 			if (memberAccess != null)
-			{
-				var propertyInfo = memberAccess.Member as PropertyInfo;
-				if (propertyInfo != null)
-				{
-					return new ExpressionMetaData
-					{
-						ColumnName = GetColumnNameForPropertyInfo(propertyInfo),
-						ResultType = typeof(TResult),
-						SetValueFn = GetSetter(expression)
-					};
-				}
-			}
+				UpdateMetaDataForMemberInfo(metaData, memberAccess.Member);
 
-			return null;
+			return metaData;
 		}
 
-		private string GetColumnNameForPropertyInfo(PropertyInfo propertyInfo)
+		private void UpdateMetaDataForMemberInfo(ExpressionMetaData metaData, MemberInfo memberInfo)
 		{
-			var att = propertyInfo.GetCustomAttributes(typeof(ExpressiveColumnAttribute)).Cast<ExpressiveColumnAttribute>().FirstOrDefault();
+			var att =
+				memberInfo.GetCustomAttributes(typeof (ExpressiveColumnAttribute))
+					.Cast<ExpressiveColumnAttribute>()
+					.SingleOrDefault();
 
-			if (att == null)
-				return propertyInfo.Name;
+			var useFieldName = (att == null || string.IsNullOrWhiteSpace(att.ColumnName));
+			metaData.ColumnName = useFieldName ? memberInfo.Name : att.ColumnName;
 
-			return att.ColumnName;
+			if (att != null && att.DatabaseType != null)
+				metaData.DatabaseType = att.DatabaseType;
 		}
 
 		// via: http://stackoverflow.com/questions/13769780/how-to-assign-a-value-via-expression

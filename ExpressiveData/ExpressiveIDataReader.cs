@@ -46,7 +46,7 @@ namespace ExpressiveData
 				throw new InvalidOperationException("Cannot create meta-data for this expression");
 
 			columnName = columnName ?? metaData.ColumnName;
-			var value = ReadValue(columnName, defaultValue);
+			var value = ReadValue(columnName, defaultValue, metaData.DatabaseType);
 
 			var setter = metaData.SetValueFn as Action<TModel, TResult>;
 			if (setter == null)
@@ -55,14 +55,49 @@ namespace ExpressiveData
 			setter(Model, value);
 		}
 
-		private TResult ReadValue<TResult>(string columnName, TResult defaultValue)
+		private TResult ReadValue<TResult>(string columnName, TResult defaultValue, Type databaseType)
 		{
 			var ordinal = _ordinalProvider.GetOrdinal(columnName);
 
 			if (_reader.IsDBNull(ordinal))
 				return defaultValue;
 
-			return (TResult)_reader.GetValue(ordinal);
+			var resultType = typeof (TResult);
+			var value = _reader.GetValue(ordinal);
+			if (databaseType == resultType)
+				return (TResult) value;
+
+			return CoerseType<TResult>(databaseType, resultType, value);
+		}
+
+		protected TResult CoerseType<TResult>(Type databaseType, Type resultType, object value)
+		{
+			if (!resultType.IsEnum)
+				return (TResult) ChangeType(value, databaseType, resultType);
+
+			if (databaseType == typeof (string))
+				return (TResult) Enum.Parse(resultType, (string) value);
+
+			return (TResult) value;
+		}
+
+		private object ChangeType(object value, Type dbType, Type resultType)
+		{
+			if (resultType == typeof (Guid))
+				return ChangeToGuid(value, dbType);
+
+			return Convert.ChangeType(value, resultType);
+		}
+
+		private Guid ChangeToGuid(object value, Type valueType)
+		{
+			if (valueType == typeof (string))
+				return Guid.Parse((string) value);
+			if (valueType == typeof (byte[]))
+				return new Guid((byte[]) value);
+
+			var msg = string.Format("Cannot convert from {0} ({1}) to GUID", value, valueType);
+			throw new ArgumentException(msg);
 		}
 	}
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ExpressiveData.Sample.Models;
 using ExpressiveData.Sample.Models.Repositories;
 
@@ -46,6 +44,7 @@ namespace ExpressiveData.Sample
 			Console.WriteLine("{1,3:000} {0,-50}", customer.Name, customer.Id);
 			Console.WriteLine("{0,-50}", customer.Address);
 			Console.WriteLine("{0}, {1}  {2}", customer.City, customer.State, customer.ZipCode);
+			Console.WriteLine("\t{0}", customer.Region);
 			Console.WriteLine();
 		}
 	}

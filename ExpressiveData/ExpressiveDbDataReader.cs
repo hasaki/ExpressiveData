@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -47,7 +46,7 @@ namespace ExpressiveData
 				throw new InvalidOperationException("Cannot create meta-data for this expression");
 
 			columnName = columnName ?? metaData.ColumnName;
-			var value = await ReadValue(columnName, defaultValue);
+			var value = await ReadValue(columnName, defaultValue, metaData.DatabaseType);
 
 			var setter = metaData.SetValueFn as Action<TModel, TResult>;
 			if (setter == null)
@@ -56,7 +55,7 @@ namespace ExpressiveData
 			setter(Model, value);
 		}
 
-		private async Task<TResult> ReadValue<TResult>(string columnName, TResult defaultValue)
+		private async Task<TResult> ReadValue<TResult>(string columnName, TResult defaultValue, Type databaseType)
 		{
 			var ordinal = _ordinalProvider.GetOrdinal(columnName);
 
@@ -64,7 +63,17 @@ namespace ExpressiveData
 			if (isNull)
 				return defaultValue;
 
-			return await _reader.GetFieldValueAsync<TResult>(ordinal);
+			var resultType = typeof (TResult);
+			if (databaseType == resultType)
+				return await _reader.GetFieldValueAsync<TResult>(ordinal);
+			
+			var value = await ReadValueAsync(ordinal);
+			return CoerseType<TResult>(databaseType, resultType, value);
+		}
+
+		private async Task<object> ReadValueAsync(int ordinal)
+		{
+			return await Task.FromResult(_reader.GetValue(ordinal));
 		}
 	}
 }
