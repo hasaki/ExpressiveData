@@ -9,7 +9,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 	{
 		public Customer GetCustomer(int id)
 		{
-			var sql = "SELECT * FROM Customers WHERE Id = @id";
+			const string sql = "SELECT * FROM Customers WHERE Id = @id";
 			var parameters = new[]
 			{
 				new SqlParameter("@id", id)
@@ -33,12 +33,38 @@ namespace ExpressiveData.Sample.Models.Repositories
 			return customer;
 		}
 
+		public async Task<Customer> GetCustomerAsync(int id)
+		{
+			const string sql = "SELECT * FROM Customers WHERE Id = @id";
+			var parameters = new[]
+			{
+				new SqlParameter("@id", id)
+			};
+
+			Customer customer = null;
+			Func<IExpressiveReaderAsync<Customer>, Task> callback = async r =>
+			{
+				r.Model = customer = new Customer();
+
+				await r.ReadAsync(m => m.Id);
+				await r.ReadAsync(m => m.Name);
+				await r.ReadAsync(m => m.Address);
+				await r.ReadAsync(m => m.City);
+				await r.ReadAsync(m => m.State);
+				await r.ReadAsync(m => m.ZipCode);
+			};
+
+			await ExecuteQueryAsync(sql, parameters, callback);
+
+			return customer;
+		}
+
 		public IEnumerable<Customer> GetAllCustomers()
 		{
 			const string sql = "SELECT * FROM Customers";
 
 			var customers = new List<Customer>();
-			Action<IExpressiveReader<Customer>> callback = r =>
+			ExecuteQuery<Customer>(sql, null, r =>
 			{
 				r.Model = new Customer();
 
@@ -50,9 +76,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 				r.Read(m => m.ZipCode);
 
 				customers.Add(r.Model);
-			};
-
-			ExecuteQuery(sql, null, callback);
+			});
 
 			return customers;
 		}
