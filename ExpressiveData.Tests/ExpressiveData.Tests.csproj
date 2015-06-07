@@ -48,8 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseExpressiveResultSetTests.cs" />
+    <Compile Include="BaseReaderTests.cs" />
     <Compile Include="ExpressionMetaDataProviderTests.cs" />
+    <Compile Include="ExpressiveDbDataReaderTests.cs" />
     <Compile Include="ExpressiveIDataReaderTests.cs" />
+    <Compile Include="MyDbDataReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

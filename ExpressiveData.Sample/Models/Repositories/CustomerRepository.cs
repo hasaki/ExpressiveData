@@ -26,6 +26,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 				r.Read(m => m.City);
 				r.Read(m => m.State);
 				r.Read(m => m.ZipCode);
+				r.Read(m => m.Region);
 			};
 
 			ExecuteQuery(sql, parameters, callback);
@@ -52,6 +53,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 				await r.ReadAsync(m => m.City);
 				await r.ReadAsync(m => m.State);
 				await r.ReadAsync(m => m.ZipCode);
+				await r.ReadAsync(m => m.Region);
 			};
 
 			await ExecuteQueryAsync(sql, parameters, callback);
@@ -74,6 +76,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 				r.Read(m => m.City);
 				r.Read(m => m.State);
 				r.Read(m => m.ZipCode);
+				r.Read(m => m.Region);
 
 				customers.Add(r.Model);
 			});
@@ -95,6 +98,7 @@ namespace ExpressiveData.Sample.Models.Repositories
 				await r.ReadAsync(m => m.City);
 				await r.ReadAsync(m => m.State);
 				await r.ReadAsync(m => m.ZipCode);
+				await r.ReadAsync(m => m.Region);
 
 				return r.Model;
 			});
