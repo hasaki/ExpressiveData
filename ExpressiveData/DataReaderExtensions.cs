@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace ExpressiveData
 {
@@ -8,9 +9,14 @@ namespace ExpressiveData
 		private static readonly Lazy<ExpressionMetaDataProvider> MetaDataProvider =
 			new Lazy<ExpressionMetaDataProvider>(() => new ExpressionMetaDataProvider());
  
-		public static DataReaderWrapper GetExpressive(this IDataReader reader)
+		public static IExpressiveResultSet GetExpressive(this IDataReader reader)
 		{
-			return new DataReaderWrapper(reader, MetaDataProvider.Value);
+			return new ExpressiveIDataReaderResultSet(reader, MetaDataProvider.Value);
+		}
+
+		public static IExpressiveResultSetAsync GetExpressive(this SqlDataReader reader)
+		{
+			return new ExpressiveDbDataReaderResultSet(reader, MetaDataProvider.Value);
 		}
 	}
 }

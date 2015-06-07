@@ -3,7 +3,7 @@
 namespace ExpressiveData
 {
 	[AttributeUsage(AttributeTargets.Property)]
-	public class DbAttribute : Attribute
+	public class ExpressiveColumnAttribute : Attribute
 	{
 		public string ColumnName { get; set; }
 	}

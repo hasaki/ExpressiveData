@@ -9,7 +9,7 @@ namespace ExpressiveData.Tests
 
 		private class TestClass
 		{
-			[DbAttribute(ColumnName = ColumnA)]
+			[ExpressiveColumn(ColumnName = ColumnA)]
 			public string PropertyWithAttribute { get; set; }
 			public string PropertyWithoutAttribute { get; set; }
 		}
