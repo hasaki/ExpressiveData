@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ExpressiveData.Sample.Models;
 using ExpressiveData.Sample.Models.Repositories;
 
